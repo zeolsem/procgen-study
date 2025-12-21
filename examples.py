@@ -42,18 +42,30 @@ def value_noise_example():
         screen.fill("#000000")
 
         _timestamp = int(timestamp)
-        plot_points(screen, noise1.vertices, offset=0.1)
+        plot_points(screen, noise1.vertices, offset=0.1, point_limit=64)
         plot_points(
-            screen, interpolate(noise1, offset=_timestamp, samples=2560), offset=0.3
+            screen,
+            interpolate(noise1, offset=_timestamp, samples=2560),
+            offset=0.3,
+            point_limit=64,
         )
         plot_points(
-            screen, interpolate(noise2, offset=_timestamp, samples=2560), offset=0.5
+            screen,
+            interpolate(noise2, offset=_timestamp, samples=2560),
+            offset=0.5,
+            point_limit=64,
         )
         plot_points(
-            screen, interpolate(noise3, offset=_timestamp, samples=2560), offset=0.7
+            screen,
+            interpolate(noise3, offset=_timestamp, samples=2560),
+            offset=0.7,
+            point_limit=64,
         )
         plot_points(
-            screen, interpolate(noise4, offset=_timestamp, samples=2560), offset=0.9
+            screen,
+            interpolate(noise4, offset=_timestamp, samples=2560),
+            offset=0.9,
+            point_limit=64,
         )
 
         pygame.display.flip()
@@ -73,11 +85,12 @@ def fractal_value_noise_example():
     octaves1 = [ValueNoise1D(16 * (i + 1), randint(0, 32565)) for i in range(8)]
     octaves2 = [ValueNoise1D(16 * (i + 1), randint(0, 32565), cosine) for i in range(8)]
     octaves3 = [
-        ValueNoise1D(16 * (i + 1), randint(0, 32565), smoothstep) for i in range(8)
+        ValueNoise1D(16 * (i + 1), randint(0, 32565), perlin_smoothstep)
+        for i in range(8)
     ]
     octaves4 = [
         ValueNoise1D(16 * (i + 1), randint(0, 32565), perlin_smoothstep)
-        for i in range(8)
+        for i in range(16)
     ]
 
     timestamp = 0

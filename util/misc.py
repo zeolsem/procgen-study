@@ -18,17 +18,22 @@ def fractalise(
     for i in range(samples):
         v = 0
         for index, octave in enumerate(octaves):
-            dv = octave.eval((i + offset) / (samples) * (octave.max_vertices)) / max(
-                1, index
+            dv = (
+                octave.eval((i + offset) / (samples) * (octave.max_vertices)) / 2**index
             )
             v += dv
         points.append(v)
     return points
 
 
-def plot_points(surface: pygame.Surface, points: list[float], offset=0.1) -> None:
+def plot_points(
+    surface: pygame.Surface,
+    points: list[float],
+    offset=0.1,
+    point_limit: int | None = None,
+) -> None:
     screen_width, screen_height = surface.get_size()
-    points = points[:64]
+    points = points[:point_limit] if point_limit else points
 
     previous_center = None
     for index, point in enumerate(points):

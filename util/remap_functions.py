@@ -2,10 +2,7 @@ from math import cos, pi
 
 
 def cosine(t: float) -> float:
-    try:
-        return (1 - cos(t * pi)) * 0.5
-    except ValueError as e:
-        raise e
+    return (1 - cos(t * pi)) * 0.5
 
 
 def smoothstep(t: float) -> float:
