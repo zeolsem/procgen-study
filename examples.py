@@ -1,0 +1,106 @@
+from random import randint
+import pygame
+from util import (
+    ValueNoise1D,
+    cosine,
+    smoothstep,
+    perlin_smoothstep,
+    fractalise,
+    plot_points,
+    interpolate,
+)
+
+
+def value_noise_example():
+    pygame.init()
+    screen = pygame.display.set_mode((640, 640))
+    clock = pygame.time.Clock()
+    running = True
+    time_flow = True
+
+    SEED = 69
+    VERTS = 256
+
+    noise1 = ValueNoise1D(max_vertices=VERTS, seed_=SEED)
+    noise2 = ValueNoise1D(max_vertices=VERTS, seed_=SEED, remap_function=cosine)
+    noise3 = ValueNoise1D(max_vertices=VERTS, seed_=SEED, remap_function=smoothstep)
+    noise4 = ValueNoise1D(
+        max_vertices=VERTS, seed_=SEED, remap_function=perlin_smoothstep
+    )
+
+    timestamp = 0
+    while running:
+        if time_flow:
+            timestamp += 0.2
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    time_flow = not time_flow
+            if event.type == pygame.QUIT:
+                running = False
+
+        screen.fill("#000000")
+
+        _timestamp = int(timestamp)
+        plot_points(screen, noise1.vertices, offset=0.1)
+        plot_points(
+            screen, interpolate(noise1, offset=_timestamp, samples=2560), offset=0.3
+        )
+        plot_points(
+            screen, interpolate(noise2, offset=_timestamp, samples=2560), offset=0.5
+        )
+        plot_points(
+            screen, interpolate(noise3, offset=_timestamp, samples=2560), offset=0.7
+        )
+        plot_points(
+            screen, interpolate(noise4, offset=_timestamp, samples=2560), offset=0.9
+        )
+
+        pygame.display.flip()
+
+        clock.tick(60)
+
+    pygame.quit()
+
+
+def fractal_value_noise_example():
+    pygame.init()
+    screen = pygame.display.set_mode((640, 640))
+    clock = pygame.time.Clock()
+    running = True
+    time_flow = True
+
+    octaves1 = [ValueNoise1D(16 * (i + 1), randint(0, 32565)) for i in range(8)]
+    octaves2 = [ValueNoise1D(16 * (i + 1), randint(0, 32565), cosine) for i in range(8)]
+    octaves3 = [
+        ValueNoise1D(16 * (i + 1), randint(0, 32565), smoothstep) for i in range(8)
+    ]
+    octaves4 = [
+        ValueNoise1D(16 * (i + 1), randint(0, 32565), perlin_smoothstep)
+        for i in range(8)
+    ]
+
+    timestamp = 0
+    while running:
+        if time_flow:
+            timestamp += 0.5
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    time_flow = not time_flow
+            if event.type == pygame.QUIT:
+                running = False
+
+        screen.fill("#000000")
+
+        _timestamp = int(timestamp)
+        plot_points(screen, fractalise(octaves1, offset=_timestamp), offset=0.2)
+        plot_points(screen, fractalise(octaves2, offset=_timestamp), offset=0.4)
+        plot_points(screen, fractalise(octaves3, offset=_timestamp), offset=0.6)
+        plot_points(screen, fractalise(octaves4, offset=_timestamp), offset=0.8)
+
+        pygame.display.flip()
+
+        clock.tick(60)
+
+    pygame.quit()
