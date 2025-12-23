@@ -157,8 +157,11 @@ def value_noise_2d_example():
 
     octaves = [ValueNoise2D(seed_=randint(0, 32565)) for _ in range(8)]
     scale = 0
+    
+    # FPS and timing tracking
+    font = pygame.font.Font(None, 28)
+    frame_count = 0
 
-    frames_left = 10
     timestamp = 0
     while running:
         if time_flow:
@@ -175,15 +178,15 @@ def value_noise_2d_example():
                 running = False
 
         screen.fill("#000000")
-        plot_points2D(
-            screen,
-            fractalise2D(octaves, offset=(int(timestamp), int(timestamp))),
-            scale=scale,
-        )
+        
+        fractal_data = fractalise2D(octaves, offset=(int(timestamp), int(timestamp)))
+        plot_points2D(screen, fractal_data, scale=scale)
+        
         pygame.display.flip()
-
         clock.tick(60)
-        if not frames_left:
-            running = False
+
+        if frame_count % 60 == 0:
+            print(clock.get_fps())
+        frame_count += 1
 
     pygame.quit()
