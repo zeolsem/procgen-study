@@ -1,6 +1,13 @@
 from .remap_functions import cosine, smoothstep, perlin_smoothstep
-from .value_noise import ValueNoise1D
-from .misc import fractalise, interpolate, plot_points
+from .value_noise import ValueNoise1D, ValueNoise2D
+from .misc import (
+    fractalise,
+    fractalise2D,
+    interpolate1D,
+    interpolate2D,
+    plot_points,
+    plot_points2D,
+)
 
 
 __all__ = [
@@ -8,7 +15,11 @@ __all__ = [
     "smoothstep",
     "perlin_smoothstep",
     "ValueNoise1D",
+    "ValueNoise2D",
     "fractalise",
-    "interpolate",
+    "fractalise2D",
+    "interpolate1D",
+    "interpolate2D",
     "plot_points",
+    "plot_points2D",
 ]
